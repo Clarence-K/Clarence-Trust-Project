@@ -3,7 +3,9 @@ var successFCN = function(values)
     console.log("values",values);
 var Race=values[0]
 var Opinion=values[1]
-        initGraph3(Opinion);
+var Interact=values[2]
+var Excel=values[3]
+        initGraph4(Excel);
   
 }
 
@@ -14,279 +16,243 @@ var failFCN = function(error)
 
 var RacePromise = d3.csv("DataFiles/Racial.csv")
 var PerPromise = d3.csv("DataFiles/Performance.csv")
-var promises=[RacePromise,PerPromise]
-Promise.all(promises)
-    .then(successFCN,failFCN);
+var INtPromise = d3.csv("DataFiles/interactions.csv")
+var ExcelPromise=d3.csv("DataFiles/black.csv")
+var promises=[RacePromise,PerPromise,INtPromise,ExcelPromise]
+Promise.all(promises).then(successFCN,failFCN);
 
 //Bars
-//Excellent
-var drawRating = function(Opinions,target,graphDim,
-                         xScale,yScale)
+//accountable
+var drawExcel = function(Job,target,graphDim,
+                         xScale,yScale,colorScale)
 {
-       console.log(xScale.bandwidth)
-    console.log(Opinions[0])
+var bar = target
+        .selectAll("g")
+        .data(Job)
+        .enter()
+        .append("g")
+        .classed("bar",true)
+
+    console.log(Job)
     target.selectAll("rect")
-    .data(Opinions[0])
+    .data(Job)
     .enter()
     .append("rect")
-    .attr("x",function(Opinion,index){
-            console.log("index:",index)
-            console.log("OP:",Opinion)
-            console.log("OP[0]:",Opinion)
-            console.log("Key: ",(Opinion[0].key))
-            //return xScale(index)
-            return index * 100
+    .attr("x",function(Jobs){
+        console.log(xScale(Jobs.Task))
+    return xScale(Jobs.Task)
+})
+    .attr("y",function(Job){
+        return yScale(Job.Black)
     })
+
+    .attr("width",xScale.bandwidth)
+    .attr("height",function(Job){
+        console.log(yScale(Job.Black))
+        
+        return graphDim.height-yScale(Job.Black)
+        
+    })
+    .attr("fill",function(Race){
+        return colorScale("Little")
+    })
+            //    tooltip
+     .on("mouseover",function(Job)
+{   
+    if(! d3.select("#tooltip").classed("off"))
+    {
+        d3.selectAll(".bar")
+            .classed("fade",true);
+            
+            
+        d3.select(this)
+            .classed("fade",false)
+            .classed("coloring",true)
+            .raise(); //move to top
+    }
+       
+   var xPos = d3.event.pageX;
+        var yPos = d3.event.pageY;
+       
+    d3.select("#tooltip") 
+       .classed("hidden",false)
+       .style("top",yPos+"px")
+       .style("left",xPos+"px")
+       //console.log("It here")
+     d3.select("div")
+       .text((Job.Black+"%"))
+        .classed("hidden",false)    
+console.log("It here")
+})
+.on("mouseout",function(Races)
+{
+    if(! d3.select("#tooltip").classed("off"))
+    {
+        d3.selectAll(".bar")
+        .classed("fade",false)
+        .classed("coloring",false)
+        
+    }
+})
+}
+
+//Little
+var drawExcel2 = function(Job,target,graphDim,
+                         xScale,yScale,colorScale)
+{
+var bar = target
+        .selectAll("g")
+        .data(Job)
+        .enter()
+        .append("g")
+        .classed("bar",true)
+
+    console.log(Job)
+    target.selectAll("rect")
+    .data(Job)
+    .enter()
+    .append("rect")
+    .attr("x",function(Jobs){
+        console.log(xScale(Jobs.Task))
+    return xScale(Jobs.Task)
+})
+    .attr("y",function(Job){
+        return yScale(Job.White)
+    })
+
+    .attr("width",xScale.bandwidth)
+    .attr("height",function(Job){
+        console.log(yScale(Job.White))
+        
+        return graphDim.height-yScale(Job.White)
+        
+    })
+    .attr("fill",function(Race){
+        return colorScale("Lot")
+    })
+            //    tooltip
+     .on("mouseover",function(Job)
+{   
+    if(! d3.select("#tooltip").classed("off"))
+    {
+        d3.selectAll(".bar")
+            .classed("fade",true);
+            
+            
+        d3.select(this)
+            .classed("fade",false)
+            .classed("coloring",true)
+            .raise(); //move to top
+    }
+       
+   var xPos = d3.event.pageX;
+        var yPos = d3.event.pageY;
+       
+    d3.select("#tooltip") 
+       .classed("hidden",false)
+       .style("top",yPos+"px")
+       .style("left",xPos+"px")
+       //console.log("It here")
+     d3.select("div")
+       .text((Job.White+"%"))
+        .classed("hidden",false)    
+console.log("It here")
+})
+.on("mouseout",function(Races)
+{
+    if(! d3.select("#tooltip").classed("off"))
+    {
+        d3.selectAll(".bar")
+        .classed("fade",false)
+        .classed("coloring",false)
+        
+    }
+})
+}
+//None
+var drawExcel3 = function(Races,target,graphDim,
+                         xScale,yScale,colorScale)
+{
+    console.log(Races)
+    target.selectAll("rect")
+    .data(Races)
+    .enter()
+    .append("rect")
+    .attr("x",function(Race){
+//        console.log(Degree)
+    return xScale(Race.Race)
+})
+    .attr("y",function(Race){
+        return yScale(Race.None)
+    })
+    .attr("width",xScale.bandwidth)
+    .attr("height",function(Race){
+        
+        
+        return graphDim.height-yScale(Race.None)
+        
+    })
+    .attr("fill",function(Race){
+        console.log(Race.Race)
+        return colorScale("None")
+    })
+        //    tooltip
+     .on("mouseover",function(Races)
+{   
+    if(! d3.select("#tooltip").classed("off"))
+    {
+        d3.selectAll(".bar")
+            .classed("fade",true);
+            
+            
+        d3.select(this)
+            .classed("fade",false)
+            .classed("coloring",true)
+            .raise(); //move to top
+    }
+       
+   var xPos = d3.event.pageX;
+        var yPos = d3.event.pageY;
+       
+    d3.select("#tooltip") 
+       .classed("hidden",false)
+       .style("top",yPos+"px")
+       .style("left",xPos+"px")
+       //console.log("It here")
+     d3.select("div")
+       .text((Races.None+"%"))
+        .classed("hidden",false)    
+console.log("It here")
+})
+.on("mouseout",function(Races)
+{
+    if(! d3.select("#tooltip").classed("off"))
+    {
+        d3.selectAll(".bar")
+        .classed("fade",false)
+        .classed("coloring",false)
+        
+    }
+})
     
-    .attr("y",function(Opinion){
-        console.log((Opinion))
-        return yScale(Opinion[1])
-    })
-
-    .attr("width",xScale.bandwidth)
-    .attr("height",function(Opinion){
-        console.log((Opinion))
-        return graphDim.height-(yScale((Opinion[1]) - (Opinion[0]))
-        
-    )})
-  //    tooltip
-     .on("mouseover",function(Opinions)
-{   
-    if(! d3.select("#tooltip").classed("off"))
-    {
-        d3.selectAll(".bar")
-            .classed("fade",true);
-            
-            
-        d3.select(this)
-            .classed("fade",false)
-            .classed("coloring",true)
-            .raise(); //move to top
-    }
-       
-   var xPos = d3.event.pageX;
-        var yPos = d3.event.pageY;
-       
-    d3.select("#tooltip") 
-       .classed("hidden",false)
-       .style("top",yPos+"px")
-       .style("left",xPos+"px")
-       //console.log("It here")
-     d3.select("div")
-       .text((Opinions.Excellent+"%"))
-        .classed("hidden",false)    
-console.log("It here")
-})
-.on("mouseout",function(Opinions)
-{
-    if(! d3.select("#tooltip").classed("off"))
-    {
-        d3.selectAll(".bar")
-        .classed("fade",false)
-        .classed("coloring",false)
-        
-    }
-})
 }
 
-//Good
-var drawRating2 = function(Opinions,target,graphDim,
-                         xScale,yScale)
-{
-    console.log(Opinions)
-    target.selectAll("rect")
-    .data(Opinions[1])
-    .enter()
-    .append("rect")
-    .attr("x",function(Opinion){
-    return xScale(Opinion.Rating)
-})
-    .attr("y",function(Opinion){
-        return yScale(Opinion)
-    })
-    .attr("width",xScale.bandwidth)
-    .attr("height",function(Opinion){
-        console.log(yScale(Opinion.Good))
-        
-        return graphDim.height-yScale(Opinion.Good)
-        
-    })
-  //    tooltip
-     .on("mouseover",function(Opinions)
-{   
-    if(! d3.select("#tooltip").classed("off"))
-    {
-        d3.selectAll(".bar")
-            .classed("fade",true);
-            
-            
-        d3.select(this)
-            .classed("fade",false)
-            .classed("coloring",true)
-            .raise(); //move to top
-    }
-       
-   var xPos = d3.event.pageX;
-        var yPos = d3.event.pageY;
-       
-    d3.select("#tooltip") 
-       .classed("hidden",false)
-       .style("top",yPos+"px")
-       .style("left",xPos+"px")
-       //console.log("It here")
-     d3.select("div")
-       .text((Opinions.Good+"%"))
-        .classed("hidden",false)    
-console.log("It here")
-})
-.on("mouseout",function(Opinions)
-{
-    if(! d3.select("#tooltip").classed("off"))
-    {
-        d3.selectAll(".bar")
-        .classed("fade",false)
-        .classed("coloring",false)
-        
-    }
-})
-}
-//Fair
-var drawRating3 = function(Opinions,target,graphDim,
-                         xScale,yScale)
-{
-    console.log(Opinions)
-    target.selectAll("rect")
-    .data(Opinions)
-    .enter()
-    .append("rect")
-    .attr("x",function(Opinion){
-    return xScale(Opinion.Rating)
-})
-    .attr("y",function(Opinion){
-        return yScale(Opinion.Fair)
-    })
-    .attr("width",xScale.bandwidth)
-    .attr("height",function(Opinion){
-        console.log(yScale(Opinion.Fair))
-        
-        return graphDim.height-yScale(Opinion.Fair)
-        
-    })
-  //    tooltip
-     .on("mouseover",function(Opinions)
-{   
-    if(! d3.select("#tooltip").classed("off"))
-    {
-        d3.selectAll(".bar")
-            .classed("fade",true);
-            
-            
-        d3.select(this)
-            .classed("fade",false)
-            .classed("coloring",true)
-            .raise(); //move to top
-    }
-       
-   var xPos = d3.event.pageX;
-        var yPos = d3.event.pageY;
-       
-    d3.select("#tooltip") 
-       .classed("hidden",false)
-       .style("top",yPos+"px")
-       .style("left",xPos+"px")
-       //console.log("It here")
-     d3.select("div")
-       .text((Opinions.Fair+"%"))
-        .classed("hidden",false)    
-console.log("It here")
-})
-.on("mouseout",function(Opinions)
-{
-    if(! d3.select("#tooltip").classed("off"))
-    {
-        d3.selectAll(".bar")
-        .classed("fade",false)
-        .classed("coloring",false)
-        
-    }
-})
-}
-var drawRating4 = function(Opinions,target,graphDim,
-                         xScale,yScale)
-{
-    console.log(Opinions)
-    target.selectAll("rect")
-    .data(Opinions)
-    .enter()
-    .append("rect")
-    .attr("x",function(Opinion){
-    return xScale(Opinion.Rating)
-})
-    .attr("y",function(Opinion){
-        return yScale(Opinion.Poor)
-    })
-    .attr("width",xScale.bandwidth)
-    .attr("height",function(Opinion){
-        console.log(yScale(Opinion.Poor))
-        
-        return graphDim.height-yScale(Opinion.Poor)
-        
-    })
-  //    tooltip
-     .on("mouseover",function(Opinions)
-{   
-    if(! d3.select("#tooltip").classed("off"))
-    {
-        d3.selectAll(".bar")
-            .classed("fade",true);
-            
-            
-        d3.select(this)
-            .classed("fade",false)
-            .classed("coloring",true)
-            .raise(); //move to top
-    }
-       
-   var xPos = d3.event.pageX;
-        var yPos = d3.event.pageY;
-       
-    d3.select("#tooltip") 
-       .classed("hidden",false)
-       .style("top",yPos+"px")
-       .style("left",xPos+"px")
-       //console.log("It here")
-     d3.select("div")
-       .text((Opinions.Poor+"%"))
-        .classed("hidden",false)    
-console.log("It here")
-})
-.on("mouseout",function(Opinions)
-{
-    if(! d3.select("#tooltip").classed("off"))
-    {
-        d3.selectAll(".bar")
-        .classed("fade",false)
-        .classed("coloring",false)
-        
-    }
-})
-}
 var makeTranslateString = function(x,y)
 {
     return "translate("+x+","+y+")";
 }
 //Axes
-var drawAxes3 = function(graphDim,margins,
+var drawAxes4 = function(graphDim,margins,
                          xScale,yScale)
 {
    var xAxis= d3.axisBottom(xScale);
 
     var yAxis= d3.axisLeft(yScale);
     
-    var axes = d3.select("#stacked")
+    var axes = d3.select("#Ex")
         .append("g")
     axes.append("g")
-        .attr("transform","translate("+margins.left+","
+        .attr("transform","translate("+(margins.left+40)+","
              +(margins.top+graphDim.height)+")")
         .call(xAxis)
     
@@ -297,24 +263,24 @@ var drawAxes3 = function(graphDim,margins,
  
 }
 //Labels
-var drawLabels3 = function(graphDim,margins)
+var drawLabels4 = function(graphDim,margins)
 {
-    var labels = d3.select("#stacked")
+    var labels = d3.select("#Ex")
         .append("g")
         .classed("labels",true)
         
     labels.append("text")
-        .text("Trust Police Black v White")
+        .text("Black v White Rating Excellent")
         .classed("title",true)
         .attr("text-anchor","middle")
-        .attr("x",margins.left+(graphDim.width/2))
+        .attr("x",margins.left+(graphDim.width/4))
         .attr("y",margins.top)
     
     labels.append("text")
         .text("By Race")
         .classed("label",true)
         .attr("text-anchor","middle")
-        .attr("x",margins.left+(graphDim.width/2))
+        .attr("x",margins.left+(graphDim.width/4))
         .attr("y",(graphDim.height + 35)  + margins.top);
 
     
@@ -322,7 +288,7 @@ var drawLabels3 = function(graphDim,margins)
         .attr("transform","translate(20,"+ 
               (margins.top+(graphDim.height/2))+")")
         .append("text")
-        .text("Percent Answered")
+        .text("Percent Answered Excellent")
         .classed("label",true)
         .attr("text-anchor","middle")
         .attr("transform","rotate(270)")
@@ -330,30 +296,23 @@ var drawLabels3 = function(graphDim,margins)
 }
 
 //Legend setup
-var drawLegend3 = function(graphDim,margins)
+var drawLegend4 = function(graphDim,margins)
 {
     
  
    var categories = [
-       {
-           class:"Lot",
-           name:"Excellent"
-       },
+
        {
            class:"Little",
-           name:"Good"
+           name:"Black"
        },
        {
            class:"None",
-           name:"Fair"
+           name:"White"
        },
-        {
-           class:"Lot",
-           name:"Poor"
-       }
        
     ]
-var legend = d3.select("#stacked")
+var legend = d3.select("#Ex")
         .append("g")
         .classed("legend",true)
         .attr("transform","translate("+
@@ -364,6 +323,11 @@ var entries = legend.selectAll("g")
             .enter()
             .append("g")
             .classed("legendEntry", true)
+.attr("class",function(categories)
+             {
+                return (categories.class);
+             })
+
 
 .attr("transform",function(categories,index)
               {
@@ -383,13 +347,13 @@ entries.append("text")
     
 }
 //graph setup
-var initGraph3 = function(Data)
+var initGraph4 = function(Data)
 {
     //size of screen
-    var screen = {width:400,height:500}
+    var screen = {width:1200,height:500}
     //how much space on each side
     var margins = {left:60,right:20,top:30,bottom:50}
-
+    
     
     
     var graph = 
@@ -399,55 +363,43 @@ var initGraph3 = function(Data)
         }
     console.log(graph);
     
-    d3.select("#stacked")
+    d3.select("#Ex")
     .attr("width",screen.width)
     .attr("height",screen.height)
     
-    var target = d3.select("#stacked")
+    var target = d3.select("#Ex")
     .append("g")
     .attr("id","#graph")
     .attr("transform",
-          "translate("+margins.left+","+
+          "translate("+(margins.left+60)+","+
                         margins.top+")");
     
-
-   var xScale = d3.scaleBand()
+    
+    var xScale = d3.scaleBand()
     .domain(["Holding officers accountable","Protecting from Crime","Treating racial and ethnic groups equally","Using appropriate force"])
-        .range([0,(graph.width)])
-        .paddingInner(.80)
+        .range([0,(graph.width/2)])
+        .paddingInner(.60)
     var yScale = d3.scaleLinear()
-        .domain([0,100])
+        .domain([0,80])
         .range([graph.height,0])
 
-    
-var graphset=[
-    {Excellent:18, Good:22, Fair:20, Poor:19},
-     {Excellent:45, Good:50, Fair:45, Poor:48},
-     {Excellent:19, Good:18, Fair:19, Poor:19}, 
-    {Excellent:16, Good:9, Fair:14, Poor:12},
-]
-var stack=d3.stack()
-.keys(["Excellent","Good","Fair","Poor"])
-gseries=stack(graphset)
-     var colorScale=
+var colorScale=
         d3.scaleOrdinal()
-   .range(["blue","black","white","yellow"]);
+   .range(["black","white"]);
+
     
-    drawAxes3(graph,margins,xScale,yScale);
+    drawAxes4(graph,margins,xScale,yScale);
     var g0=target.append("g")
     
       var g1=target.append("g")
-    .attr("transform","translate(53,0)")
+    .attr("transform","translate(-58,0)")
     var g2=target.append("g")
-    .attr("transform","translate(106,0)");
-        var g3=target.append("g")
-    .attr("transform","translate(159,0)");
-  drawRating(gseries,target,graph,xScale,yScale,colorScale);
- drawRating2(gseries,g1,graph,xScale,yScale,colorScale);
-    drawRating3(gseries,g2,graph,xScale,yScale,colorScale);
-    drawRating4(gseries,g3,graph,xScale,yScale,colorScale);
-    drawLabels3(graph,margins);
-    drawLegend3(graph,margins);
+    .attr("transform","translate(8,0)");
+    drawExcel(Data,g2,graph,xScale,yScale,colorScale);
+    drawExcel2(Data,g1,graph,xScale,yScale,colorScale);
+//    drawPlot3(Data,g2,graph,xScale,yScale,colorScale);
+    drawLabels4(graph,margins);
+    drawLegend4(graph,margins);
     
     
     

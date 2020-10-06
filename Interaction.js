@@ -22,16 +22,24 @@ Promise.all(promises)
 
 //Bars
 //Lot
+
 var drawPlot = function(Polices,target,graphDim,
                          xScale,yScale,colorScale)
 {
+     var bar = target
+        .selectAll("g")
+        .data(Polices)
+        .enter()
+        .append("g")
+        .classed("bar",true)
+    
     console.log(Polices)
-    target.selectAll("rect")
+    bar.selectAll("rect")
     .data(Polices)
     .enter()
     .append("rect")
     .attr("x",function(Police){
-console.log(xScale(Police.Interaction))
+//console.log(xScale(Police.Interaction))
     return xScale(Police.Interaction)
 })
     .attr("y",function(Police){
@@ -49,11 +57,12 @@ console.log(xScale(Police.Interaction))
         console.log(Police.Interaction)
         return colorScale("The police are easy to talk to")
     })
+//    tooltip
      .on("mouseover",function(Police)
 {   
     if(! d3.select("#tooltip").classed("off"))
     {
-        d3.selectAll(".line")
+        d3.selectAll(".bar")
             .classed("fade",true);
             
             
@@ -71,9 +80,8 @@ console.log(xScale(Police.Interaction))
        .style("top",yPos+"px")
        .style("left",xPos+"px")
        //console.log("It here")
-     d3.select("p")
-       .text((Police.Often))
-
+     d3.select("div")
+       .text((Police.Often+"%"))
         .classed("hidden",false)    
 console.log("It here")
 })
@@ -81,7 +89,7 @@ console.log("It here")
 {
     if(! d3.select("#tooltip").classed("off"))
     {
-        d3.selectAll(".line")
+        d3.selectAll(".bar")
         .classed("fade",false)
         .classed("coloring",false)
         
@@ -93,12 +101,20 @@ console.log("It here")
 var drawPlot2 = function(Polices,target,graphDim,
                          xScale,yScale,colorScale)
 {
+         var bar = target
+        .selectAll("g")
+        .data(Polices)
+        .enter()
+        .append("g")
+        .classed("bar",true)
+         
     console.log(Polices)
     target.selectAll("rect")
     .data(Polices)
     .enter()
     .append("rect")
     .attr("x",function(Police){
+        console.log((Police.Interaction))
     return xScale(Police.Interaction)
 })
     .attr("y",function(Police){
@@ -114,18 +130,64 @@ var drawPlot2 = function(Polices,target,graphDim,
        .attr("fill",function(Police){
         return colorScale("Sometimes")
     })
+    //    tooltip
+     .on("mouseover",function(Police)
+{   
+    if(! d3.select("#tooltip").classed("off"))
+    {
+        d3.selectAll(".bar")
+            .classed("fade",true);
+            
+            
+        d3.select(this)
+            .classed("fade",false)
+            .classed("coloring",true)
+            .raise(); //move to top
+    }
+       
+   var xPos = d3.event.pageX;
+        var yPos = d3.event.pageY;
+       
+    d3.select("#tooltip") 
+       .classed("hidden",false)
+       .style("top",yPos+"px")
+       .style("left",xPos+"px")
+       //console.log("It here")
+     d3.select("div")
+       .text((Police.Sometimes+"%"))
+        .classed("hidden",false)    
+console.log("It here")
+})
+.on("mouseout",function(Police)
+{
+    if(! d3.select("#tooltip").classed("off"))
+    {
+        d3.selectAll(".bar")
+        .classed("fade",false)
+        .classed("coloring",false)
+        
+    }
+})
 }
+
+
 //None
 var drawPlot3 = function(Polices,target,graphDim,
                          xScale,yScale,colorScale)
 {
+             var bar = target
+        .selectAll("g")
+        .data(Polices)
+        .enter()
+        .append("g")
+        .classed("bar",true)
+    
     console.log(Polices)
-    target.selectAll("rect")
+    bar.selectAll("rect")
     .data(Polices)
     .enter()
     .append("rect")
     .attr("x",function(Police){
-//        console.log(Degree)
     return xScale(Police.Interaction)
 })
     .attr("y",function(Police){
@@ -138,10 +200,49 @@ var drawPlot3 = function(Polices,target,graphDim,
         return graphDim.height-yScale(Police.Almost)
         
     })
+    
     .attr("fill",function(Race){
 //        console.log(Race.Race)
         return colorScale("None")
     })
+    //    tooltip
+     .on("mouseover",function(Police)
+{   
+    if(! d3.select("#tooltip").classed("off"))
+    {
+        d3.selectAll(".bar")
+            .classed("fade",true);
+            
+            
+        d3.select(this)
+            .classed("fade",false)
+            .classed("coloring",true)
+            .raise(); //move to top
+    }
+       
+   var xPos = d3.event.pageX;
+        var yPos = d3.event.pageY;
+       
+    d3.select("#tooltip") 
+       .classed("hidden",false)
+       .style("top",yPos+"px")
+       .style("left",xPos+"px")
+       //console.log("It here")
+     d3.select("div")
+       .text((Police.Almost+"%"))
+        .classed("hidden",false)    
+console.log("It here")
+})
+.on("mouseout",function(Police)
+{
+    if(! d3.select("#tooltip").classed("off"))
+    {
+        d3.selectAll(".bar")
+        .classed("fade",false)
+        .classed("coloring",false)
+        
+    }
+})
     
 }
 
@@ -157,7 +258,7 @@ var drawAxes = function(graphDim,margins,
 
     var yAxis= d3.axisLeft(yScale);
     
-    var axes = d3.select("svg")
+    var axes = d3.select("#Interaction")
         .append("g")
     axes.append("g")
         .attr("transform","translate("+(margins.left+40)+","
@@ -173,7 +274,7 @@ var drawAxes = function(graphDim,margins,
 //Labels
 var drawLabels = function(graphDim,margins)
 {
-    var labels = d3.select("svg")
+    var labels = d3.select("#Interaction")
         .append("g")
         .classed("labels",true)
         
@@ -181,14 +282,14 @@ var drawLabels = function(graphDim,margins)
         .text("Trust Police Black v White")
         .classed("title",true)
         .attr("text-anchor","middle")
-        .attr("x",margins.left+(graphDim.width/2))
+        .attr("x",margins.left+(graphDim.width/4))
         .attr("y",margins.top)
     
     labels.append("text")
-        .text("By Race")
+        .text("Rating on")
         .classed("label",true)
         .attr("text-anchor","middle")
-        .attr("x",margins.left+(graphDim.width/2))
+        .attr("x",margins.left+(graphDim.width/4))
         .attr("y",(graphDim.height + 35)  + margins.top);
 
     
@@ -223,7 +324,7 @@ var drawLegend = function(graphDim,margins)
        },
        
     ]
-var legend = d3.select("svg")
+var legend = d3.select("#Interaction")
         .append("g")
         .classed("legend",true)
         .attr("transform","translate("+
@@ -234,6 +335,10 @@ var entries = legend.selectAll("g")
             .enter()
             .append("g")
             .classed("legendEntry", true)
+.attr("class",function(categories)
+             {
+                return (categories.class);
+             })
 
 .attr("transform",function(categories,index)
               {
@@ -269,20 +374,20 @@ var initGraph = function(Data)
         }
     console.log(graph);
     
-    d3.select("svg")
+    d3.select("Interaction")
     .attr("width",screen.width)
-    .attr("height",screen.height)
+    .attr("height",screen.height) 
+
     
-    var target = d3.select("svg")
+    var target = d3.select("#Interaction")
     .append("g")
     .attr("id","#graph")
     .attr("transform",
           "translate("+(margins.left+60)+","+
                         margins.top+")");
     
-    
     var xScale = d3.scaleBand()
-        .domain(["Easy","Kids","People","Harass"])
+        .domain(["Easy to Talk to","Polite to Kids","Polite to People","Harass or Mistreat People"])
         .range([0,(graph.width/2)])
         .paddingInner(.85)
     var yScale = d3.scaleLinear()
@@ -291,7 +396,7 @@ var initGraph = function(Data)
 
 var colorScale=
         d3.scaleOrdinal()
-          .range(["red","blue","purple","black"]);
+          .range(["blue","black","white"]);
     console.log(xScale)
     
     drawAxes(graph,margins,xScale,yScale);
@@ -303,8 +408,8 @@ var colorScale=
     .attr("transform","translate(15,0)");
     var g3=target.append("g")
     .attr("transform","translate(159,0)");
-    drawPlot(Data,g0,graph,xScale,yScale,colorScale);
-    drawPlot2(Data,g1,graph,xScale,yScale,colorScale);
+    drawPlot(Data,g1,graph,xScale,yScale,colorScale);
+    drawPlot2(Data,g0,graph,xScale,yScale,colorScale);
     drawPlot3(Data,g2,graph,xScale,yScale,colorScale);
 //        drawPlot4(Data,g3,graph,xScale,yScale);
     drawLabels(graph,margins);

@@ -4,7 +4,7 @@ var successFCN = function(values)
 var Race=values[0]
 var Opinion=values[1]
 var Interact=values[2]
-        initGraph(Race);
+        initGraph2(Race);
   
 }
 
@@ -17,12 +17,11 @@ var RacePromise = d3.csv("DataFiles/Racial.csv")
 var PerPromise = d3.csv("DataFiles/Performance.csv")
 var INtPromise = d3.csv("DataFiles/interactions.csv")
 var promises=[RacePromise,PerPromise,INtPromise]
-Promise.all(promises)
-    .then(successFCN,failFCN);
+Promise.all(promises).then(successFCN,failFCN);
 
 //Bars
 //Lot
-var drawPlot = function(Races,target,graphDim,
+var drawRacial = function(Races,target,graphDim,
                          xScale,yScale,colorScale)
 {
 
@@ -50,10 +49,48 @@ var drawPlot = function(Races,target,graphDim,
         console.log(Race.Race)
         return colorScale("Little")
     })
+            //    tooltip
+     .on("mouseover",function(Races)
+{   
+    if(! d3.select("#tooltip").classed("off"))
+    {
+        d3.selectAll(".bar")
+            .classed("fade",true);
+            
+            
+        d3.select(this)
+            .classed("fade",false)
+            .classed("coloring",true)
+            .raise(); //move to top
+    }
+       
+   var xPos = d3.event.pageX;
+        var yPos = d3.event.pageY;
+       
+    d3.select("#tooltip") 
+       .classed("hidden",false)
+       .style("top",yPos+"px")
+       .style("left",xPos+"px")
+       //console.log("It here")
+     d3.select("div")
+       .text((Races.Little+"%"))
+        .classed("hidden",false)    
+console.log("It here")
+})
+.on("mouseout",function(Races)
+{
+    if(! d3.select("#tooltip").classed("off"))
+    {
+        d3.selectAll(".bar")
+        .classed("fade",false)
+        .classed("coloring",false)
+        
+    }
+})
 }
 
 //Little
-var drawPlot2 = function(Races,target,graphDim,
+var drawRacial2 = function(Races,target,graphDim,
                          xScale,yScale,colorScale)
 {
     console.log(Races)
@@ -79,9 +116,47 @@ var drawPlot2 = function(Races,target,graphDim,
         console.log(Race.Race)
         return colorScale("Lot")
     })
+            //    tooltip
+     .on("mouseover",function(Races)
+{   
+    if(! d3.select("#tooltip").classed("off"))
+    {
+        d3.selectAll(".bar")
+            .classed("fade",true);
+            
+            
+        d3.select(this)
+            .classed("fade",false)
+            .classed("coloring",true)
+            .raise(); //move to top
+    }
+       
+   var xPos = d3.event.pageX;
+        var yPos = d3.event.pageY;
+       
+    d3.select("#tooltip") 
+       .classed("hidden",false)
+       .style("top",yPos+"px")
+       .style("left",xPos+"px")
+       //console.log("It here")
+     d3.select("div")
+       .text((Races.Lot+"%"))
+        .classed("hidden",false)    
+console.log("It here")
+})
+.on("mouseout",function(Races)
+{
+    if(! d3.select("#tooltip").classed("off"))
+    {
+        d3.selectAll(".bar")
+        .classed("fade",false)
+        .classed("coloring",false)
+        
+    }
+})
 }
 //None
-var drawPlot3 = function(Races,target,graphDim,
+var drawRacial3 = function(Races,target,graphDim,
                          xScale,yScale,colorScale)
 {
     console.log(Races)
@@ -107,6 +182,44 @@ var drawPlot3 = function(Races,target,graphDim,
         console.log(Race.Race)
         return colorScale("None")
     })
+        //    tooltip
+     .on("mouseover",function(Races)
+{   
+    if(! d3.select("#tooltip").classed("off"))
+    {
+        d3.selectAll(".bar")
+            .classed("fade",true);
+            
+            
+        d3.select(this)
+            .classed("fade",false)
+            .classed("coloring",true)
+            .raise(); //move to top
+    }
+       
+   var xPos = d3.event.pageX;
+        var yPos = d3.event.pageY;
+       
+    d3.select("#tooltip") 
+       .classed("hidden",false)
+       .style("top",yPos+"px")
+       .style("left",xPos+"px")
+       //console.log("It here")
+     d3.select("div")
+       .text((Races.None+"%"))
+        .classed("hidden",false)    
+console.log("It here")
+})
+.on("mouseout",function(Races)
+{
+    if(! d3.select("#tooltip").classed("off"))
+    {
+        d3.selectAll(".bar")
+        .classed("fade",false)
+        .classed("coloring",false)
+        
+    }
+})
     
 }
 
@@ -115,14 +228,14 @@ var makeTranslateString = function(x,y)
     return "translate("+x+","+y+")";
 }
 //Axes
-var drawAxes = function(graphDim,margins,
+var drawAxes2 = function(graphDim,margins,
                          xScale,yScale)
 {
    var xAxis= d3.axisBottom(xScale);
 
     var yAxis= d3.axisLeft(yScale);
     
-    var axes = d3.select("svg")
+    var axes = d3.select("#Racial")
         .append("g")
     axes.append("g")
         .attr("transform","translate("+(margins.left+40)+","
@@ -136,9 +249,9 @@ var drawAxes = function(graphDim,margins,
  
 }
 //Labels
-var drawLabels = function(graphDim,margins)
+var drawLabels2 = function(graphDim,margins)
 {
-    var labels = d3.select("svg")
+    var labels = d3.select("#Racial")
         .append("g")
         .classed("labels",true)
         
@@ -169,7 +282,7 @@ var drawLabels = function(graphDim,margins)
 }
 
 //Legend setup
-var drawLegend = function(graphDim,margins)
+var drawLegend2 = function(graphDim,margins)
 {
     
  
@@ -188,7 +301,7 @@ var drawLegend = function(graphDim,margins)
        },
        
     ]
-var legend = d3.select("svg")
+var legend = d3.select("#Racial")
         .append("g")
         .classed("legend",true)
         .attr("transform","translate("+
@@ -199,6 +312,11 @@ var entries = legend.selectAll("g")
             .enter()
             .append("g")
             .classed("legendEntry", true)
+.attr("class",function(categories)
+             {
+                return (categories.class);
+             })
+
 
 .attr("transform",function(categories,index)
               {
@@ -218,7 +336,7 @@ entries.append("text")
     
 }
 //graph setup
-var initGraph = function(Data)
+var initGraph2 = function(Data)
 {
     //size of screen
     var screen = {width:400,height:500}
@@ -234,11 +352,11 @@ var initGraph = function(Data)
         }
     console.log(graph);
     
-    d3.select("svg")
+    d3.select("#Racial")
     .attr("width",screen.width)
     .attr("height",screen.height)
     
-    var target = d3.select("svg")
+    var target = d3.select("#Racial")
     .append("g")
     .attr("id","#graph")
     .attr("transform",
@@ -256,21 +374,21 @@ var initGraph = function(Data)
 
 var colorScale=
         d3.scaleOrdinal()
-          .range(["red","blue","purple"]);
+   .range(["blue","black","white"]);
 
     
-    drawAxes(graph,margins,xScale,yScale);
+    drawAxes2(graph,margins,xScale,yScale);
     var g0=target.append("g")
     
       var g1=target.append("g")
     .attr("transform","translate(-32,0)")
     var g2=target.append("g")
     .attr("transform","translate(32,0)");
-    drawPlot(Data,target,graph,xScale,yScale,colorScale);
-    drawPlot2(Data,g1,graph,xScale,yScale,colorScale);
-    drawPlot3(Data,g2,graph,xScale,yScale,colorScale);
-    drawLabels(graph,margins);
-    drawLegend(graph,margins);
+    drawRacial(Data,target,graph,xScale,yScale,colorScale);
+    drawRacial2(Data,g1,graph,xScale,yScale,colorScale);
+   drawRacial3(Data,g2,graph,xScale,yScale,colorScale);
+    drawLabels2(graph,margins);
+    drawLegend2(graph,margins);
     
     
     

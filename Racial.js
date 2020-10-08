@@ -188,11 +188,11 @@ var drawRacial3 = function(Races,target,graphDim,
     if(! d3.select("#tooltip").classed("off"))
     {
         d3.selectAll(".bar")
-            .classed("fade",true);
+
             
             
         d3.select(this)
-            .classed("fade",false)
+        
             .classed("coloring",true)
             .raise(); //move to top
     }
@@ -215,7 +215,7 @@ console.log("It here")
     if(! d3.select("#tooltip").classed("off"))
     {
         d3.selectAll(".bar")
-        .classed("fade",false)
+       
         .classed("coloring",false)
         
     }
@@ -256,18 +256,18 @@ var drawLabels2 = function(graphDim,margins)
         .classed("labels",true)
         
     labels.append("text")
-        .text("Trust Police Black v White")
+        .text("Trust in Police")
         .classed("title",true)
         .attr("text-anchor","middle")
         .attr("x",margins.left+(graphDim.width/2))
-        .attr("y",margins.top)
+        .attr("y",(margins.top*.7))
     
     labels.append("text")
         .text("By Race")
         .classed("label",true)
         .attr("text-anchor","middle")
         .attr("x",margins.left+(graphDim.width/2))
-        .attr("y",(graphDim.height + 35)  + margins.top);
+        .attr("y",(graphDim.height + 40)  + margins.top);
 
     
     labels.append("g")
@@ -339,9 +339,9 @@ entries.append("text")
 var initGraph2 = function(Data)
 {
     //size of screen
-    var screen = {width:400,height:500}
+    var screen = {width:400,height:550}
     //how much space on each side
-    var margins = {left:60,right:20,top:30,bottom:50}
+    var margins = {left:60,right:20,top:90,bottom:50}
     
     
     
@@ -366,8 +366,8 @@ var initGraph2 = function(Data)
     
     var xScale = d3.scaleBand()
         .domain(["Whites","Blacks"])
-        .range([0,(graph.width/2)])
-        .paddingInner(.80)
+        .range([0,(graph.width/1.5)])
+        .paddingInner(.73)
     var yScale = d3.scaleLinear()
         .domain([0,50])
         .range([graph.height,0])
@@ -379,13 +379,14 @@ var colorScale=
     
     drawAxes2(graph,margins,xScale,yScale);
     var g0=target.append("g")
+    .attr("transform","translate(-13,0)")
     
       var g1=target.append("g")
-    .attr("transform","translate(-32,0)")
+    .attr("transform","translate(-58.5,0)")
     var g2=target.append("g")
-    .attr("transform","translate(32,0)");
-    drawRacial(Data,target,graph,xScale,yScale,colorScale);
+    .attr("transform","translate(33,0)");
     drawRacial2(Data,g1,graph,xScale,yScale,colorScale);
+    drawRacial(Data,g0,graph,xScale,yScale,colorScale);
    drawRacial3(Data,g2,graph,xScale,yScale,colorScale);
     drawLabels2(graph,margins);
     drawLegend2(graph,margins);

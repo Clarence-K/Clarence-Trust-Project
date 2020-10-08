@@ -63,13 +63,8 @@ var drawPlot = function(Polices,target,graphDim,
     if(! d3.select("#tooltip").classed("off"))
     {
         d3.selectAll(".bar")
-            .classed("fade",true);
             
-            
-        d3.select(this)
-            .classed("fade",false)
-            .classed("coloring",true)
-            .raise(); //move to top
+    
     }
        
    var xPos = d3.event.pageX;
@@ -90,7 +85,6 @@ console.log("It here")
     if(! d3.select("#tooltip").classed("off"))
     {
         d3.selectAll(".bar")
-        .classed("fade",false)
         .classed("coloring",false)
         
     }
@@ -136,11 +130,9 @@ var drawPlot2 = function(Polices,target,graphDim,
     if(! d3.select("#tooltip").classed("off"))
     {
         d3.selectAll(".bar")
-            .classed("fade",true);
-            
+    
             
         d3.select(this)
-            .classed("fade",false)
             .classed("coloring",true)
             .raise(); //move to top
     }
@@ -163,7 +155,7 @@ console.log("It here")
     if(! d3.select("#tooltip").classed("off"))
     {
         d3.selectAll(".bar")
-        .classed("fade",false)
+
         .classed("coloring",false)
         
     }
@@ -211,11 +203,10 @@ var drawPlot3 = function(Polices,target,graphDim,
     if(! d3.select("#tooltip").classed("off"))
     {
         d3.selectAll(".bar")
-            .classed("fade",true);
-            
+        
             
         d3.select(this)
-            .classed("fade",false)
+
             .classed("coloring",true)
             .raise(); //move to top
     }
@@ -238,7 +229,7 @@ console.log("It here")
     if(! d3.select("#tooltip").classed("off"))
     {
         d3.selectAll(".bar")
-        .classed("fade",false)
+    
         .classed("coloring",false)
         
     }
@@ -279,18 +270,18 @@ var drawLabels = function(graphDim,margins)
         .classed("labels",true)
         
     labels.append("text")
-        .text("Trust Police Black v White")
+        .text("Experience with Police")
         .classed("title",true)
         .attr("text-anchor","middle")
         .attr("x",margins.left+(graphDim.width/4))
-        .attr("y",margins.top)
+        .attr("y",margins.top-20)
     
     labels.append("text")
         .text("Rating on")
         .classed("label",true)
         .attr("text-anchor","middle")
         .attr("x",margins.left+(graphDim.width/4))
-        .attr("y",(graphDim.height + 35)  + margins.top);
+        .attr("y",(graphDim.height + 45)  + margins.top);
 
     
     labels.append("g")
@@ -328,7 +319,7 @@ var legend = d3.select("#Interaction")
         .append("g")
         .classed("legend",true)
         .attr("transform","translate("+
-              (margins.left+ 10) +","+
+              (margins.left+ 750) +","+
              (margins.top+10)+")");
 var entries = legend.selectAll("g")
             .data(categories)
@@ -361,9 +352,9 @@ entries.append("text")
 var initGraph = function(Data)
 {
     //size of screen
-    var screen = {width:1700,height:500}
+    var screen = {width:1500,height:500}
     //how much space on each side
-    var margins = {left:60,right:20,top:30,bottom:50}
+    var margins = {left:60,right:40,top:75,bottom:50}
     
     
     
@@ -389,7 +380,7 @@ var initGraph = function(Data)
     var xScale = d3.scaleBand()
         .domain(["Easy to Talk to","Polite to Kids","Polite to People","Harass or Mistreat People"])
         .range([0,(graph.width/2)])
-        .paddingInner(.85)
+        .paddingInner(.8)
     var yScale = d3.scaleLinear()
         .domain([0,50])
         .range([graph.height,0])
@@ -401,11 +392,11 @@ var colorScale=
     
     drawAxes(graph,margins,xScale,yScale);
     var g0=target.append("g")
-    .attr("transform","translate(-22,0)")
+    .attr("transform","translate(-13.5,0)")
       var g1=target.append("g")
-    .attr("transform","translate(-60,0)")
+    .attr("transform","translate(-58.5,0)")
     var g2=target.append("g")
-    .attr("transform","translate(15,0)");
+    .attr("transform","translate(32.5,0)");
     var g3=target.append("g")
     .attr("transform","translate(159,0)");
     drawPlot(Data,g1,graph,xScale,yScale,colorScale);

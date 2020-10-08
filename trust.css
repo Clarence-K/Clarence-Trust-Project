@@ -17,7 +17,7 @@ background-size: cover;
 #tooltip
 {
     position:absolute;
-    width:300px;
+    width:40px;
     height:auto;
     padding:10px;
     background-color:white;
@@ -27,15 +27,6 @@ background-size: cover;
     
 }
 
-.fade{
-    opacity: .1
-}
-/*
-
-.coloring path{
-    stroke:gold;
-    stroke-width:6;
-}*/
 
 .Lot
 {
@@ -49,4 +40,80 @@ background-size: cover;
 .None
 {
     fill:white
+}
+.Poor{
+    fill:GoldenRod
+}
+.vl {
+    
+  border-left: 6px solid black;
+  height: 800px;
+  position: absolute;
+  left: 50%;
+  margin-left: -3px;
+  top: 0;
+}
+img{
+    width: 400px;height:450px
+}
+#left{
+     margin-top: 50px;
+/*
+     position: absolute;
+  left: 15%;
+*/
+    float:left
+}
+#right{
+    margin-top: 50px;
+/*
+   position: absolute;
+  left: 65%;
+*/
+        float:right
+    }
+.hidden{
+    display: none;
+}
+.left{
+     position: absolute;
+  left: 15%; 
+}
+.right{
+      position: absolute;
+  left: 65%;
+}
+#bannerl{
+     position: absolute;
+  left: 15%;
+    
+}
+#bannerl{
+      margin-top: 50px;
+     position: absolute;
+  left: 15%;
+    
+}
+#banner2{
+     position: absolute;
+  left: 65%;
+    
+}
+#reflection{
+    margin-top:0;
+        position: absolute;
+    left:25%;
+}
+
+text.title{
+    font-size: 40
+}
+text.label{
+    font-size: 23
+}
+text{
+    font-size:12
+}
+#Ex{
+    float: right
 }

@@ -274,14 +274,14 @@ var drawLabels4 = function(graphDim,margins)
         .classed("title",true)
         .attr("text-anchor","middle")
         .attr("x",margins.left+(graphDim.width/4))
-        .attr("y",margins.top)
+        .attr("y",margins.top*.7)
     
     labels.append("text")
         .text("By Race")
         .classed("label",true)
         .attr("text-anchor","middle")
         .attr("x",margins.left+(graphDim.width/4))
-        .attr("y",(graphDim.height + 35)  + margins.top);
+        .attr("y",(graphDim.height + 42.5)  + margins.top);
 
     
     labels.append("g")
@@ -350,9 +350,9 @@ entries.append("text")
 var initGraph4 = function(Data)
 {
     //size of screen
-    var screen = {width:1200,height:500}
+    var screen = {width:1350,height:550}
     //how much space on each side
-    var margins = {left:60,right:20,top:30,bottom:50}
+    var margins = {left:60,right:20,top:75,bottom:50}
     
     
     
@@ -378,7 +378,7 @@ var initGraph4 = function(Data)
     var xScale = d3.scaleBand()
     .domain(["Holding officers accountable","Protecting from Crime","Treating racial and ethnic groups equally","Using appropriate force"])
         .range([0,(graph.width/2)])
-        .paddingInner(.60)
+        .paddingInner(.65)
     var yScale = d3.scaleLinear()
         .domain([0,80])
         .range([graph.height,0])

@@ -199,17 +199,7 @@ var drawExcel3 = function(Races,target,graphDim,
         //    tooltip
      .on("mouseover",function(Races)
 {   
-    if(! d3.select("#tooltip").classed("off"))
-    {
-        d3.selectAll(".bar")
-            .classed("fade",true);
-            
-            
-        d3.select(this)
-            .classed("fade",false)
-            .classed("coloring",true)
-            .raise(); //move to top
-    }
+ 
        
    var xPos = d3.event.pageX;
         var yPos = d3.event.pageY;
@@ -226,13 +216,9 @@ console.log("It here")
 })
 .on("mouseout",function(Races)
 {
-    if(! d3.select("#tooltip").classed("off"))
-    {
-        d3.selectAll(".bar")
-        .classed("fade",false)
-        .classed("coloring",false)
-        
-    }
+  d3.select("#tooltip")
+        .classed("hidden",true)
+
 })
     
 }
